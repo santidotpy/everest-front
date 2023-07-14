@@ -1,73 +1,35 @@
 "use client";
-import axios from "axios";
 import { ChangeEvent, useState } from "react";
-import "./styles.css";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import api from "../../../api";
+import "./styles.css";
+// import Box from "@mui/material/Box";
+// import Card from "@mui/material/Card";
+// import CardActions from "@mui/material/CardActions";
+// import CardContent from "@mui/material/CardContent";
+// import Typography from "@mui/material/Typography";
+// import axios from "axios";
+// import api from "../../../api";
+// import {
+//   Alert,
+//   FormControl,
+//   FormHelperText,
+//   Input,
+//   InputLabel,
+//   Snackbar,
+// } from "@mui/material";
 
-// import logo from "./logo.svg";
-
-// const usernames = ["joe", "joe1", "joe2"];
-
-// const useDebounce = (value: string, delay: number) => {
-//   const [debouncedValue, setDebouncedValue] = useState<string>(value);
-
-//   useEffect(() => {
-//     const handler = setTimeout(() => {
-//       setDebouncedValue(value);
-//     }, delay);
-//     return () => {
-//       clearTimeout(handler);
-//     };
-//   }, [value, delay]);
-
-//   return debouncedValue;
-// };
-
-// type UsernameProps = {
-//   isValid: boolean;
-//   isLoading: boolean;
-//   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
-// };
-
-// const Username: FC<UsernameProps> = ({ isValid, isLoading, handleChange }) => {
-//   return (
-//     <>
-//       <div className="username">
-//         <input
-//           onChange={handleChange}
-//           autoComplete="off"
-//           spellCheck="false"
-//           className="control"
-//           type="email"
-//           placeholder="Username"
-//         />
-//         <div className={`spinner ${isLoading ? "loading" : ""}`}></div>
-//       </div>
-//       <div className={`validation ${!isValid ? "invalid" : ""}`}>
-//         Username already taken
-//       </div>
-//     </>
-//   );
-// };
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
-  const { LOGIN_ROUTE } = process.env;
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isValid, setIsValid] = useState(false);
-
-  // const debouncedUsername = useDebounce(credentials.email, 500);
+  const [errors, setErrors] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsLoading(true);
@@ -77,60 +39,69 @@ export default function Login() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit2 = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    const wea = await api.post('/api/session/login', 
-    {
-      email: credentials.email,
-      password: credentials.password,
-    }
-    );
-    console.log(wea);
-    // setIsLoading(true);
-    // setTimeout(() => {
-    //   setIsLoading(false);
-    // }, 2000);
+    fetch("http://localhost:3000/api/session/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 200) {
+          localStorage.setItem("token", data.token);
+          //document.cookie = `token=${data.token}`;
+          //localStorage.setItem("user", JSON.stringify(data.user));
+        } else {
+          alert(data.message);
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setErrors(true);
+        toast.warn("Please check your credentials.", {
+          position: "bottom-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        //console.log(err);
+      });
   };
 
-
-
-  // useEffect(() => {
-  //   setIsValid(!usernames.some((u) => u === debouncedUsername));
-  //   setIsLoading(false);
-  // }, [debouncedUsername]);
-
   return (
-
-    <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-      onSubmit={handleSubmit}
-    >
-
-      <Card
-        sx={{ minWidth: 275 }}
-        className=" mx-auto mt-20 bg-[#243c63] text-white border-2 border-[#1f2530] rounded-xl"
-
+    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      <form
+        className="flex flex-col items-center justify-center w-full px-20"
+        onSubmit={handleSubmit2}
       >
-        <CardContent >
-          <Typography variant="h5" component="div" className="text-center">
+        <div className="flex flex-col items-center justify-center w-full px-20">
+          <h1
+            className="text-5x
+          l font-bold text-center text-[#243c63]"
+          >
             Login
-          </Typography>
-
-          <div className="
-      flex flex-col
-      ">
+          </h1>
+          <div className="flex flex-col items-center justify-center w-full px-20">
             <TextField
               required
               id="outlined-required"
               label="Email"
               type="email"
               name="email"
+              className="w-full mt-5 bg-[#fff] border-2 border-[#1f2530] rounded-xl"
               onChange={handleChange}
             />
 
@@ -139,26 +110,38 @@ export default function Login() {
               label="Password"
               type="password"
               name="password"
-              autoComplete="current-password"
+              className="w-full mt-5 bg-[#fff] border-2 border-[#1f2530] rounded-xl"
+              //autoComplete="current-password"
               onChange={handleChange}
             />
-
           </div>
-        </CardContent>
-        <CardActions className="flex justify-center">
-          <Button
-            variant="contained"
-            color="primary"
-            // disabled={!isValid}
-            className="bg-blue-600 font-bold mb-3"
-            size="large"
-            type="submit"
-          >
-            Log In
-          </Button>
-        </CardActions>
-      </Card>
-    </Box>
+          <div className="flex flex-col items-center justify-center w-full px-20">
+            <Button
+              variant="contained"
+              type="submit"
+              className="w-full mt-5 bg-[#243c63] text-white border-2 border-[#1f2530] rounded-xl"
+            >
+              Login
+            </Button>
+          </div>
+        </div>
+      </form>
 
+      {errors && (
+        <ToastContainer
+          position="bottom-center"
+          autoClose={4000}
+          limit={2}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+      )}
+    </div>
   );
 }
