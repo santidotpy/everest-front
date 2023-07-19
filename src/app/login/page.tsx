@@ -3,21 +3,7 @@ import { ChangeEvent, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import "./styles.css";
-// import Box from "@mui/material/Box";
-// import Card from "@mui/material/Card";
-// import CardActions from "@mui/material/CardActions";
-// import CardContent from "@mui/material/CardContent";
-// import Typography from "@mui/material/Typography";
-// import axios from "axios";
-// import api from "../../../api";
-// import {
-//   Alert,
-//   FormControl,
-//   FormHelperText,
-//   Input,
-//   InputLabel,
-//   Snackbar,
-// } from "@mui/material";
+
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -39,11 +25,13 @@ export default function Login() {
     }));
   };
 
+  const SERVER_URL = "http://localhost:3000";
+
   const handleSubmit2 = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
-    fetch("http://localhost:3000/api/session/login", {
+    fetch(`${SERVER_URL}/api/session/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,11 +43,24 @@ export default function Login() {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.status === 200) {
+        if (data.token) {
           localStorage.setItem("token", data.token);
           //document.cookie = `token=${data.token}`;
           //localStorage.setItem("user", JSON.stringify(data.user));
+
+          toast.success("Welcome back!", {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          window.location.href = "/products";
         } else {
+          console.log(data);
           alert(data.message);
         }
         setIsLoading(false);
