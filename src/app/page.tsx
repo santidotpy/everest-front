@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
 import Underline from "@/components/Underline";
 
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
           Browse Products
         </Link>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

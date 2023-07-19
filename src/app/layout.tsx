@@ -3,7 +3,11 @@
 
 // const inter = Inter({ subsets: ["latin"] });
 import "@/styles/globals.css";
+import { Urbanist } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+
+const inter = Urbanist({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Everest - Shop The Peak",
@@ -24,7 +28,9 @@ export default function RootLayout({
       <body className="bg-[#17181C] text-white">
         <Navbar />
         <main className="app">{children}</main>
-        {/* <Footer /> */}
+        <div className="flex max-w-4xl mx-auto flex-col items-center justify-center py-2">
+          <Footer />
+        </div>
       </body>
     </html>
   );
