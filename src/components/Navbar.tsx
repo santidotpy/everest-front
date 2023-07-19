@@ -57,7 +57,7 @@ function Navbar() {
       },
       warning: {
         main: "#ff0000",
-        },
+      },
       background: {
         default: "#fff",
         paper: "#121212",
@@ -148,7 +148,7 @@ function Navbar() {
               variant="h5"
               noWrap
               component="a"
-              href=""
+              href="/"
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -180,10 +180,14 @@ function Navbar() {
                 <Stack spacing={3} direction="row">
                   {/* <ThemeProvider theme={theme}> */}
                   <Link href="/login">
-                    <Button variant="contained" color="primary" className="bg-blue-600 font-bold">
-                        Log In
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className="bg-blue-600 font-bold"
+                    >
+                      Log In
                     </Button>
-                </Link>
+                  </Link>
                   <Link href="/register">
                     <Button variant="outlined" className="font-bold">
                       Register
@@ -248,6 +252,5 @@ function Navbar() {
     </ThemeProvider>
   );
 }
-
 
 export default Navbar;
