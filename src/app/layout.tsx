@@ -6,6 +6,7 @@ import "@/styles/globals.css";
 import { Urbanist } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ModalProvider from "@/providers/modal-provider";
 
 const inter = Urbanist({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-[#17181C] text-white">
+        <ModalProvider />
         <Navbar />
         <main className="app">{children}</main>
         <div className="flex max-w-4xl mx-auto flex-col items-center justify-center py-2">
