@@ -9,14 +9,22 @@ import OpenInFullRoundedIcon from "@mui/icons-material/OpenInFullRounded";
 
 import { Product } from "../../types";
 import Currency from "./Currency";
+import { useRouter } from "next/navigation";
 
 interface ProductCard {
   data: Product;
 }
 
 const ProductCard = ({ data }: ProductCard) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/product/${data?._id}`);
+  };
+
   return (
     <div
+      onClick={handleClick}
       className="
      group cursor-pointer rounded-xl p-2 mb-5 pb-5 hover:shadow-lg transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105
     "
@@ -69,7 +77,6 @@ const ProductCard = ({ data }: ProductCard) => {
 
 export default ProductCard;
 
-
 // import Image from "next/image";
 // import Card from "@mui/material/Card";
 // import CardMedia from "@mui/material/CardMedia";
@@ -105,8 +112,8 @@ export default ProductCard;
 //               <Currency value={data.price} />
 //             </Typography>
 //           </div>
-//           <div className="flex gap-x-6 justify-center mt-2 opacity-0 group-hover:opacity-100 transition 
-            
+//           <div className="flex gap-x-6 justify-center mt-2 opacity-0 group-hover:opacity-100 transition
+
 //           ">
 //             <IconButton
 //               className="w-12 h-12 bg-[#068ad1] text-white border-2 border-[#027bbd]"
