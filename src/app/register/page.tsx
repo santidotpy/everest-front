@@ -6,6 +6,8 @@ import TextField from "@mui/material/TextField";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Box, CircularProgress } from "@mui/material";
+import {SERVER_URL} from "@/utils/utils";
+
 
 export default function Register() {
   const [credentials, setCredentials] = useState({
@@ -27,7 +29,7 @@ export default function Register() {
     }));
   };
 
-  const SERVER_URL = "http://localhost:3000";
+  //const SERVER_URL = "http://localhost:3000";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

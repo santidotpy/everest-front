@@ -2,6 +2,7 @@
 import { ChangeEvent, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import {SERVER_URL} from "@/utils/utils";
 import "./styles.css";
 
 
@@ -25,7 +26,7 @@ export default function Login() {
     }));
   };
 
-  const SERVER_URL = "http://localhost:3000";
+  //const SERVER_URL = "http://localhost:3000";
 
   const handleSubmit2 = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

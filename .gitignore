@@ -41,4 +41,3 @@ src/app/api
 src/actions/post-add-to-cart.tsx
 src/actions/post-login.ts
 src/providers/auth-provider.tsx
-src/utils
