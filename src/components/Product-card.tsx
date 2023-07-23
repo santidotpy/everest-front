@@ -12,12 +12,14 @@ import { MouseEventHandler } from "react";
 import { Product } from "../../types";
 import Currency from "./Currency";
 import usePreviewModal from "@/hooks/use-preview-modal";
+import useCart from "@/hooks/use-cart";
 
 interface ProductCard {
   data: Product;
 }
 
 const ProductCard = ({ data }: ProductCard) => {
+  const cart = useCart();
   const previewModal = usePreviewModal();
   const router = useRouter();
 
@@ -29,6 +31,12 @@ const ProductCard = ({ data }: ProductCard) => {
     e.stopPropagation();
 
     previewModal.onOpen(data);
+  };
+
+  const onAddToCart: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+
+    cart.addItem(data);
   };
 
   return (
@@ -72,6 +80,7 @@ const ProductCard = ({ data }: ProductCard) => {
               <OpenInFullRoundedIcon />
             </IconButton>
             <IconButton
+              onClick={onAddToCart}
               className="w-50 mt-2 bg-[#068ad1] text-white border-2 border-[#027bbd]  text-center justify-center align-center mx-auto"
               size="large"
               color="primary"
@@ -86,64 +95,3 @@ const ProductCard = ({ data }: ProductCard) => {
 };
 
 export default ProductCard;
-
-// import Image from "next/image";
-// import Card from "@mui/material/Card";
-// import CardMedia from "@mui/material/CardMedia";
-// import CardContent from "@mui/material/CardContent";
-// import IconButton from "@mui/material/IconButton";
-// import Typography from "@mui/material/Typography";
-// import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
-// import OpenInFullRoundedIcon from "@mui/icons-material/OpenInFullRounded";
-
-// import { Product } from "../../types";
-// import Currency from "./Currency";
-
-// interface ProductCard {
-//   data: Product;
-// }
-
-// const ProductCard = ({ data }: ProductCard) => {
-//   return (
-//     <div className="max-w-md mx-auto mb-5 pb-5 hover:shadow-lg transition duration-200 ease-in-out cursor-pointer group">
-//       <Card className="h-full flex flex-col justify-between">
-//         <CardMedia
-//           component="img"
-//           alt={data.productName}
-//           height="250"
-//           image={data.thumbnail}
-//         />
-//         <CardContent className="flex flex-col justify-between">
-//           <div>
-//             <Typography variant="subtitle1" className="font-bold">
-//               {data.productName}
-//             </Typography>
-//             <Typography variant="body2" color="text.secondary">
-//               <Currency value={data.price} />
-//             </Typography>
-//           </div>
-//           <div className="flex gap-x-6 justify-center mt-2 opacity-0 group-hover:opacity-100 transition
-
-//           ">
-//             <IconButton
-//               className="w-12 h-12 bg-[#068ad1] text-white border-2 border-[#027bbd]"
-//               size="large"
-//               color="primary"
-//             >
-//               <OpenInFullRoundedIcon />
-//             </IconButton>
-//             <IconButton
-//               className="w-12 h-12 bg-[#068ad1] text-white border-2 border-[#027bbd]"
-//               size="large"
-//               color="primary"
-//             >
-//               <ShoppingCartSharpIcon />
-//             </IconButton>
-//           </div>
-//         </CardContent>
-//       </Card>
-//     </div>
-//   );
-// };
-
-// export default ProductCard;

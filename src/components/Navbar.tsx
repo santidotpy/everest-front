@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,16 +14,23 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import Logout from "@mui/icons-material/Logout";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import LandscapeSharpIcon from "@mui/icons-material/LandscapeSharp";
+import Badge from "@mui/material/Badge";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+import useCart from "@/hooks/use-cart";
+import { toast } from "react-hot-toast";
 
 const pages = ["Products"];
 const settings = ["Profile", "Logout"];
 const pageName = "Everest";
 
 function Navbar() {
+  const [user, setUser] = React.useState({ token: "" });
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -30,10 +38,23 @@ function Navbar() {
     null
   );
 
+  const cart = useCart();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Check if the code is running on the client-side
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        setUser({ token: token });
+      }
+    }
+  }, []);
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    console.log("user menu");
     setAnchorElUser(event.currentTarget);
   };
 
@@ -65,19 +86,7 @@ function Navbar() {
     },
   });
 
-  const theme = createTheme({
-    palette: {
-      primary: {
-        // Purple and green play nicely together.
-        main: "#ffffff",
-      },
-      secondary: {
-        // This is green.A700 as hex.
-        main: "#0357ff",
-      },
-      mode: "dark",
-    },
-  });
+  const router = useRouter();
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -175,77 +184,89 @@ function Navbar() {
               ))}
             </Box>
 
-            <div className="p-4">
-              <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
-                <Stack spacing={3} direction="row">
-                  {/* <ThemeProvider theme={theme}> */}
-                  <Link href="/login">
+            {/* esto deberia salir si no esta logueado */}
+            {!user.token ? (
+              <div className="p-4">
+                <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
+                  <Stack spacing={3} direction="row">
+                    {/* <ThemeProvider theme={theme}> */}
+                    <Link href="/login">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className="bg-blue-600 font-bold"
+                      >
+                        Log In
+                      </Button>
+                    </Link>
+                    <Link href="/register">
+                      <Button variant="outlined" className="font-bold">
+                        Register
+                      </Button>
+                    </Link>
+                    {/* </ThemeProvider> */}
+                  </Stack>
+                </Box>
+              </div>
+            ) : (
+              <></>
+            )}
+
+            <Box>
+              <Badge
+                badgeContent={cart?.items?.length > 0 ? cart?.items?.length : 0}
+                color="error"
+                className="cursor-pointer hover:opacity-70"
+                onClick={() => router.push("/cart")}
+              >
+                <ShoppingCartSharpIcon sx={{ mr: 1 }} />
+              </Badge>
+            </Box>
+
+            {user.token ? (
+              <Box sx={{ flexGrow: 0, marginLeft: 3 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem onClick={handleCloseUserMenu}>
                     <Button
                       variant="contained"
-                      color="primary"
-                      className="bg-blue-600 font-bold"
+                      startIcon={<Logout fontSize="small" />}
+                      onClick={() => {
+                        if (typeof window !== "undefined") {
+                          window.localStorage.removeItem("token");
+                        }
+                        setUser({ token: "" });
+                        toast.success("Logout successful!");
+                        router.push("/");
+                      }}
                     >
-                      Log In
+                      Logout
                     </Button>
-                  </Link>
-                  <Link href="/register">
-                    <Button variant="outlined" className="font-bold">
-                      Register
-                    </Button>
-                  </Link>
-                  {/* </ThemeProvider> */}
-                </Stack>
-              </Box>
-            </div>
-
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/cart"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              <ShoppingCartSharpIcon sx={{ mr: 2 }} />
-            </Typography>
-
-            {/* esto deberia salir si esta logueado */}
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
-                ))}
-              </Menu>
-            </Box>
+                </Menu>
+              </Box>
+            ) : (
+              <></>
+            )}
           </Toolbar>
         </Container>
       </AppBar>
