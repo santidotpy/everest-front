@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ModalProvider from "@/providers/modal-provider";
 import ToastProvider from "@/providers/toast-provider";
+// import AuthProvider from "@/providers/auth-provider";
 
 const inter = Urbanist({ subsets: ["latin"] });
 
@@ -31,7 +32,10 @@ export default function RootLayout({
         <ToastProvider />
         <ModalProvider />
         <Navbar />
-        <main className="app">{children}</main>
+        <main className="app">
+          {/* <AuthProvider>{children}</AuthProvider> */}
+          {children}
+        </main>
         <div className="flex max-w-4xl mx-auto flex-col items-center justify-center py-2">
           <Footer />
         </div>
