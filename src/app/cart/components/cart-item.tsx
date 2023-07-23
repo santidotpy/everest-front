@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import Currency from "@/components/Currency";
 import useCart from "@/hooks/use-cart";
-import { Product } from "../../../../types";
+import { Product } from "@/types";
 
 interface CartItemProps {
   data: Product;

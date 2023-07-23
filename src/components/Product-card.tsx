@@ -9,7 +9,7 @@ import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import OpenInFullRoundedIcon from "@mui/icons-material/OpenInFullRounded";
 import { MouseEventHandler } from "react";
 
-import { Product } from "../../types";
+import { Product } from "@/types";
 import Currency from "./Currency";
 import usePreviewModal from "@/hooks/use-preview-modal";
 import useCart from "@/hooks/use-cart";

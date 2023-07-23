@@ -2,7 +2,7 @@
 
 import Currency from "@/components/Currency";
 import Button from "@mui/material/Button";
-import { Product } from "../../types";
+import { Product } from "@/types";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import useCart from "@/hooks/use-cart";
 

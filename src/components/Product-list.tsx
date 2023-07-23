@@ -1,4 +1,4 @@
-import { Product, Docs } from "../../types";
+import { Product, Docs } from "@/types";
 import NoResults from "@/components/No-result";
 import ProductCard from "@/components/Product-card";
 

@@ -1,6 +1,6 @@
 import qs from "query-string";
 
-import { Product, Docs } from "../../types";
+import { Product, Docs } from "@/types";
 
 const URL = `${process.env.BACKEND_URL}/api/product`;
 
