@@ -8,7 +8,7 @@ interface Query {
   id?: string;
 }
 
-const getProduct = async (query: Query): Promise<Product[]> => {
+const getProduct = async (query: Query): Promise<Product> => {
   const url = qs.stringifyUrl({
     url: URL,
     query: {
