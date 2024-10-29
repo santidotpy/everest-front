@@ -1,44 +1,76 @@
-import Link from "next/link";
-// import Footer from "@/components/Footer";
-import Underline from "@/components/Underline";
+"use client"
 
-export default function Home() {
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+// import { Button } from "@/components/ui/button"
+
+import Image from 'next/image'
+
+export default function Component() {
+  const [email, setEmail] = useState('')
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <div className="flex max-w-6xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
-      {/* Efecto RBG */}
-      <div className="main">
-        <div className="gradient" />
-      </div>
-      <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:mt-1 mt-1 background-gradient">
-        <a
-          href="/register"
-          rel="noreferrer"
-          className="border border-gray-700 rounded-lg py-2 px-4 text-gray-360 text-sm mb-5 transition duration-300 ease-in-out"
-        >
-          Join Everest today for{" "}
-          <span className="text-blue-600 font-bold">FREE</span>
-        </a>
-        <h1 className="mx-auto max-w-4xl font-display text-5xl font-bold tracking-normal text-gray-300 sm:text-7xl">
-          Conquer the{" "}
-          <span className="relative whitespace-nowrap text-blue-600 mb-3">
-            <Underline />
-            <span className="relative">Everest</span>
-          </span>{" "}
-          <aside className="mt-3"> of online shopping </aside>
-        </h1>
-        <h2 className="mx-auto mt-12 max-w-xl text-lg sm:text-gray-360  text-gray-370 leading-7">
-          Everest is a fictional e-commerce website. A place where you can
-          browse products, add them to your cart, and checkout. Everest is built
-          with Next.js, TypeScript, Material UI and TailwindCSS.
-        </h2>
-        <Link
-          className="bg-blue-600 rounded-xl text-white font-medium px-4 py-3 sm:mt-10 mt-8 hover:bg-blue-500 transition"
-          href="/products"
-        >
-          Browse Products
-        </Link>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-700 text-white overflow-hidden">
+      <main className="px-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <motion.h1
+              className="text-6xl md:text-8xl font-extrabold mb-6 leading-tight"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              Scale the peaks of
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400">
+                digital commerce
+              </span>
+            </motion.h1>
+
+            <motion.p
+              className="text-xl mb-8"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              Everest isn&apos;t just shopping—it&apos;s an expedition into a world of unparalleled products and experiences.
+            </motion.p>
+          </div>
+
+          <div className="relative h-[500px]">
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-tr from-pink-500 to-indigo-500 rounded-full blur-3xl opacity-30"
+            />
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+
+            // style={{
+            // y: scrollY * 0.5,
+            // }}
+            >
+              <Image
+                src="/images/mountain.png"
+                width={2500}
+                height={2500}
+                // fill
+                alt="An image of a big mountain"
+                className="w-full h-full object-contain"
+              />
+
+
+            </motion.div>
+          </div>
+        </div>
       </main>
-      {/* <Footer /> */}
     </div>
-  );
+  )
 }

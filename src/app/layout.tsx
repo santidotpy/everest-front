@@ -32,7 +32,7 @@ export default function RootLayout({
         <ToastProvider />
         <ModalProvider />
         <Navbar />
-        <main className="app">
+        <main >
           {/* <AuthProvider>{children}</AuthProvider> */}
           {children}
         </main>
