@@ -37,7 +37,7 @@ export default function RootLayout({
         <main >
           {/* <AuthProvider>{children}</AuthProvider> */}
           {children}
-          <Toaster />
+          <Toaster richColors theme="dark"/>
         </main>
         <div className="flex max-w-4xl mx-auto flex-col items-center justify-center py-2">
           <Footer />
