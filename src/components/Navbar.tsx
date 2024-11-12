@@ -37,7 +37,7 @@ export default function Navbar() {
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-400 dark:to-purple-500">Everest</span>
         </Link>
         <nav className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex absolute md:relative top-16 md:top-0 left-0 right-0 flex-col md:flex-row items-center gap-6 bg-white md:bg-transparent p-4 md:p-0 text-white`}>
-          <Link className="text-md font-bold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" href="#">
+          <Link className="text-md font-bold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" href="/">
             Home
           </Link>
           <Link className="text-md font-bold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" href="/products">
