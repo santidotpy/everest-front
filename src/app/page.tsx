@@ -1,20 +1,10 @@
 "use client"
 
-import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-// import { Button } from "@/components/ui/button"
 
 import Image from 'next/image'
 
-export default function Component() {
-  const [email, setEmail] = useState('')
-  const [scrollY, setScrollY] = useState(0)
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+export default function Home() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-700 text-white overflow-hidden">
@@ -52,10 +42,6 @@ export default function Component() {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-
-            // style={{
-            // y: scrollY * 0.5,
-            // }}
             >
               <Image
                 src="/images/mountain.png"
@@ -65,7 +51,6 @@ export default function Component() {
                 alt="An image of a big mountain"
                 className="w-full h-full object-contain"
               />
-
 
             </motion.div>
           </div>
