@@ -3,7 +3,8 @@
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 interface ModalProps {
   open: boolean;
@@ -12,19 +13,21 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname !== "/products" && open) {
+      onClose();
+    }
+  }, [pathname, open, onClose]);
+
   return (
     <Transition show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
         <div className="fixed inset-0 bg-black bg-opacity-50" />
 
-        <div
-          className="
-                fixed inset-0 overflow-y-auto"
-        >
-          <div
-            className="flex min-h-full items-center justify-center p-4 text-center
-                        "
-          >
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
