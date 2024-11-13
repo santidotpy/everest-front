@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-
 interface InfoProps {
   data: Product;
 }
@@ -54,9 +53,14 @@ const Info: React.FC<InfoProps> = ({ data }) => {
         <div className="flex flex-col gap-y-2">
           <h2 className="text-xl font-bold text-gray-900">Description</h2>
           <p className="text-gray-700">{data.description}</p>
+          <p className="mt-2 text-sm text-red-600">Only {data.stock} units left!</p>
         </div>
       </div>
-      <div className="mt-10 flex items-center gap-x-3">
+
+      {/* <div className="mt-5">
+        <QuantitySelector maxQuantity={data.stock} />
+      </div> */}
+      <div className="mt-8 flex items-center gap-x-3">
         <Button
           size="sm"
           onClick={onAddToCart}
