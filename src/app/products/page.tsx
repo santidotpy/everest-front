@@ -12,7 +12,7 @@ export default async function Products() {
          flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8
         "
         >
-          <ProductList title="Products" items={productos} />
+          <ProductList title="Our Products" items={productos} />
         </div>
       </Container>
     </div>
