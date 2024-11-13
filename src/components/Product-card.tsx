@@ -1,18 +1,16 @@
 "use client";
 import { useRouter } from "next/navigation";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
-import OpenInFullRoundedIcon from "@mui/icons-material/OpenInFullRounded";
 import { MouseEventHandler } from "react";
 
 import { Product } from "@/types";
 import Currency from "./Currency";
 import usePreviewModal from "@/hooks/use-preview-modal";
 import useCart from "@/hooks/use-cart";
+
+import Image from "next/image";
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Star, ShoppingCart, Eye } from 'lucide-react'
+import { Button } from "@/components/ui/button"
 
 interface ProductCard {
   data: Product;
@@ -40,58 +38,61 @@ const ProductCard = ({ data }: ProductCard) => {
   };
 
   return (
-    <div
-      onClick={handleClick}
-      className="
-     group cursor-pointer rounded-xl p-2 mb-5 pb-5 hover:shadow-lg transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105
-    "
-    >
-      <div className="aspect-square rounded-xl relative">
-        <Card sx={{ maxWidth: 450 }}>
-          <CardMedia
-            component="img"
+    <div onClick={handleClick} className="cursor-pointer h-full">
+      <Card className="overflow-hidden group h-full flex flex-col shadow-lg shadow-white/20 dark:shadow-dark rounded-lg">
+        <div className="relative w-full h-64">
+          <Image
+            src={data.thumbnail}
             alt={data.productName}
-            height="250"
-            style={{ height: "fit-content" }}
-            image={data.thumbnail}
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
           />
-          <CardContent>
-            <Typography
-              variant="subtitle1"
-              // color="text.secondary"
-              className="font-bold"
-            >
-              {data.productName}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              <Currency value={data.price} />
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <div className="opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-15">
-          <div className="flex gap-x-6 justify-center">
-            <IconButton
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <Button 
+              variant="secondary" 
+              size="sm" 
+              className="mr-2 backdrop-blur-md hover:bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-400 dark:to-purple-500"
               onClick={onPreview}
-              className="w-50 mt-2 bg-[#068ad1] text-white border-2 border-[#027bbd]  text-center justify-center align-center mx-auto"
-              size="large"
-              color="primary"
             >
-              <OpenInFullRoundedIcon />
-            </IconButton>
-            <IconButton
+              <Eye className="w-4 h-4 mr-2" />
+              Quick View
+            </Button>
+            <Button 
+              size="sm"
               onClick={onAddToCart}
-              className="w-50 mt-2 bg-[#068ad1] text-white border-2 border-[#027bbd]  text-center justify-center align-center mx-auto"
-              size="large"
-              color="primary"
+              className="backdrop-blur-md hover:bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-400 dark:to-purple-500"
             >
-              <ShoppingCartSharpIcon />
-            </IconButton>
+              <ShoppingCart className="w-4 h-4 mr-2" />
+              Add to Cart
+            </Button>
           </div>
         </div>
-      </div>
+        <CardContent className="p-4 flex-grow">
+          <h3 className="font-semibold text-lg mb-2 line-clamp-2">{data.productName}</h3>
+          {/* TODO Ratings */}
+          {/* <div className="flex items-center mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`w-4 h-4 ${
+                  i < Math.floor(data?.rating || 0) 
+                  ? 'text-yellow-400 fill-current' 
+                  : 'text-gray-300'
+                }`}
+              />
+            ))}
+            <span className="ml-2 text-sm text-muted-foreground">
+              ({data?.rating || 0})
+            </span>
+          </div> */}
+          <p className="text-muted-foreground text-sm">{data.category}</p>
+        </CardContent>
+        <CardFooter className="p-4 pt-0 mt-auto">
+          <Currency value={data.price} />
+        </CardFooter>
+      </Card>
     </div>
   );
 };
-
 export default ProductCard;

@@ -12,6 +12,9 @@ const nextConfig = {
       "static.nike.com",
       "static.wikia.nocookie.net",
       "assets.adidas.com",
+      "satisfactory.wiki.gg",
+      "minecraft.fandom.com",
+      "fallout.fandom.com",
     ],
   },
 };

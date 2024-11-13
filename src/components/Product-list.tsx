@@ -10,8 +10,9 @@ interface ProductListProps {
 
 const ProductList = ({ title, items }: ProductListProps) => {
   return (
-    <div className="flex flex-col items-center justify-center w-full">
-      <h1 className="text-3xl font-bold text-center text-[#3678e3]">{title}</h1>
+    <div className="container mx-auto px-4 py-8 mt-14 min-h-screen flex flex-col">
+      <h2 className="text-3xl font-bold mb-8">{title}</h2>
+
       {items.docs.length === 0 && <NoResults />}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">

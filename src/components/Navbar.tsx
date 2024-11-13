@@ -1,277 +1,66 @@
-"use client";
-import React from "react";
-import { useEffect } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import Logout from "@mui/icons-material/Logout";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import LandscapeSharpIcon from "@mui/icons-material/LandscapeSharp";
-import Badge from "@mui/material/Badge";
-import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+'use client'
+import { Button } from "@/components/ui/button"
+import { Mountain, ShoppingCart, Menu, X, LogOut } from "lucide-react"
+import Link from "next/link"
+import { useRouter } from 'next/navigation'
+import { useAuth } from "@/providers/auth-provider"
+import { toast } from 'sonner'
 
-import useCart from "@/hooks/use-cart";
-import { toast } from "react-hot-toast";
+export default function Navbar() {
+  const { isAuthenticated, logout } = useAuth();
 
-const pages = ["Products"];
-const settings = ["Profile", "Logout"];
-const pageName = "Everest";
+  const router = useRouter()
 
-function Navbar() {
-  const [user, setUser] = React.useState({ token: "" });
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
-
-  const cart = useCart();
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Check if the code is running on the client-side
-      const token = window.localStorage.getItem("token");
-      if (token) {
-        setUser({ token: token });
-      }
-    }
-  }, []);
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+    toast.info('You logged out');
   };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    console.log("user menu");
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const darkTheme = createTheme({
-    palette: {
-      mode: "dark",
-      primary: {
-        main: "#1976d2",
-      },
-      secondary: {
-        // This is green.A700 as hex.
-        main: "#11cb5f",
-      },
-      warning: {
-        main: "#ff0000",
-      },
-      background: {
-        default: "#fff",
-        paper: "#121212",
-      },
-    },
-  });
-
-  const router = useRouter();
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <AppBar position="static">
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <LandscapeSharpIcon
-              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-            />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              {pageName}
-            </Typography>
-
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
-              >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-            <LandscapeSharpIcon
-              sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
-            />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              {pageName}
-            </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  href={`/${page.toLowerCase()}`}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page}
+    <>
+      <div className='fixed top-0 left-0 right-0 z-50 p-4 flex justify-between items-center bg-black/20 backdrop-blur-md'>
+        <Link className="flex items-center gap-2 text-2xl font-bold ml-2" href="/">
+          <Mountain className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-400 dark:to-purple-500">Everest</span>
+        </Link>
+        <nav className={`md:flex absolute md:relative top-16 md:top-0 left-0 right-0 flex-col md:flex-row items-center gap-6 bg-white md:bg-transparent p-4 md:p-0 text-white`}>
+          <Link className="text-md font-bold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" href="/">
+            Home
+          </Link>
+          <Link className="text-md font-bold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" href="/products">
+            Products
+          </Link>
+        </nav>
+        <div className="flex items-center gap-1">
+          {isAuthenticated ? (
+            <>
+              <Button variant="ghost" size="lg" className='font-bold text-white hover:bg-red-800' onClick={handleLogout}>
+                <LogOut /> Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button variant="ghost" size="lg" className='font-bold text-white hover:bg-indigo-800'>
+                  Login
                 </Button>
-              ))}
-            </Box>
-
-            {/* esto deberia salir si no esta logueado */}
-            {!user.token ? (
-              <div className="p-4">
-                <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
-                  <Stack spacing={3} direction="row">
-                    {/* <ThemeProvider theme={theme}> */}
-                    <Link href="/login">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className="bg-blue-600 font-bold"
-                      >
-                        Log In
-                      </Button>
-                    </Link>
-                    <Link href="/register">
-                      <Button variant="outlined" className="font-bold">
-                        Register
-                      </Button>
-                    </Link>
-                    {/* </ThemeProvider> */}
-                  </Stack>
-                </Box>
-              </div>
-            ) : (
-              <></>
-            )}
-
-            <Box>
-              <Badge
-                badgeContent={cart?.items?.length > 0 ? cart?.items?.length : 0}
-                color="error"
-                className="cursor-pointer hover:opacity-70"
-                onClick={() => router.push("/cart")}
-              >
-                <ShoppingCartSharpIcon sx={{ mr: 1 }} />
-              </Badge>
-            </Box>
-
-            {user.token ? (
-              <Box sx={{ flexGrow: 0, marginLeft: 3 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Button
-                      variant="contained"
-                      startIcon={<Logout fontSize="small" />}
-                      onClick={() => {
-                        if (typeof window !== "undefined") {
-                          window.localStorage.removeItem("token");
-                        }
-                        setUser({ token: "" });
-                        toast.success("Logout successful!");
-                        router.push("/");
-                      }}
-                    >
-                      Logout
-                    </Button>
-                  </MenuItem>
-                </Menu>
-              </Box>
-            ) : (
-              <></>
-            )}
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </ThemeProvider>
-  );
+              </Link>
+              <Link href="/register">
+                <Button size="lg" className='font-bold hover:bg-indigo-800'>
+                  Register
+                </Button>
+              </Link>
+            </>
+          )}
+          <Link href={isAuthenticated ? "/cart" : "/login"}>
+            <Button size="icon" variant="ghost" className='mx-2 bg-gradient-to-r from-i</div>ndigo-500 to-purple-600 dark:from-indigo-400 dark:to-purple-500 hover:from-indigo-600 hover:to-purple-700 dark:hover:from-indigo-500 dark:hover:to-purple-600 transition-colors'>
+              <ShoppingCart className="h-5 w-5" />
+              <span className="sr-only">Cart</span>
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </>
+  )
 }
-
-export default Navbar;
